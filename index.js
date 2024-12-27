@@ -14,6 +14,13 @@ const jobOffer = require("./routes/jobOffer_route");
 const applications = require("./routes/applications_route");
 const services = require("./routes/service_route");
 const info = require("./routes/info_routes");
+const reviews = require("./routes/review_routes");
+const links = require("./routes/links_routes");
+const messages = require("./routes/messages_routes");
+const projects = require("./routes/projects_routes");
+const projectMedia = require("./routes/projectMedia_routes");
+const employees = require("./routes/employees_routes");
+const heroMedia = require("./routes/heroMedia_routes");
 
 const languageMiddleware = require("./middlewares/languageMiddleware");
 
@@ -28,6 +35,13 @@ app.use("/api", jobOffer);
 app.use("/api", applications);
 app.use("/api", services);
 app.use("/api", info);
+app.use("/api", reviews);
+app.use("/api", links);
+app.use("/api", messages);
+app.use("/api", projects);
+app.use("/api", projectMedia);
+app.use("/api", employees);
+app.use("/api", heroMedia);
 
 //Start Server
 const PORT = process.env.PORT || 3100;

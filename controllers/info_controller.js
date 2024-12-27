@@ -106,13 +106,12 @@ async function updateInfo(req, res) {
     const { id } = req.params;
     const { phone_number, email, address_ar, address_en, maps_link } = req.body;
 
-    console.log("reqBody", req.body);
-    // Validate email
-    if (!validator.isEmail(email)) {
+    // Validate email if provided
+    if (email && !validator.isEmail(email)) {
       return res.status(400).json({ message: "Invalid email address" });
     }
 
-    // Validate maps link
+    // Validate maps link if provided
     if (
       maps_link &&
       (!validator.isURL(maps_link) || !maps_link.includes("google.com/maps"))
@@ -121,23 +120,25 @@ async function updateInfo(req, res) {
     }
 
     const existingInfo = await infoRepository.findInfoById(id);
-    console.log("existingInfo", existingInfo);
+
     if (!existingInfo) {
       return res.status(404).json({ message: "Info Not Found" });
     }
 
     const updatedData = {
       id,
-      phone_number: phone_number || existingInfo.phone_number,
-      email: email || existingInfo.email,
-      address_ar: address_ar || existingInfo.address_ar,
-      address_en: address_en || existingInfo.address_en,
-      maps_link: maps_link || existingInfo.maps_link,
+      phone_number: phone_number ?? existingInfo.phone_number,
+      email: email ?? existingInfo.email,
+      address_ar: address_ar ?? existingInfo.address_ar,
+      address_en: address_en ?? existingInfo.address_en,
+      maps_link: maps_link ?? existingInfo.maps_link,
     };
-    console.log("Updated Data:", updatedData);
+
     await infoRepository.updateInfo(updatedData);
+
     res.status(200).json({ message: "Info Updated Successfully" });
   } catch (error) {
+    console.error("Error in updateInfo:", error);
     res
       .status(500)
       .json({ error: "Failed to update Info", details: error.message });
